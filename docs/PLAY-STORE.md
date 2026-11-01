@@ -73,7 +73,7 @@ Upload texts and graphics for every language with `tools/play-listing.sh` (add
 
 ## 4. Form factors
 
-Advanced settings, Form factors, **Add Android TV**, then opt in. The TV listing
+Console path `/app/4972483586312634084/advanced-distribution?tab=releaseTypes` (`advanced-settings` redirects home), **Add form factor**, Android TV, then opt in. The TV listing
 uses the TV banner and TV screenshots. Remove "Phone" if Play added it: the
 manifest requires leanback, so phones cannot install it. Play reviews TV apps
 against the TV app quality guidelines: D-pad navigation everywhere, no
@@ -122,3 +122,11 @@ traffic. No sensitive permission, no foreground service, no background location.
 2. The owner opens the opt-in link once, then installs from the TV's Play Store.
 3. Production after a day of use without a blocking problem. Play reviews the
    first production release and the TV form factor (allow up to 7 days).
+
+## 7. Submission history
+
+| date | version | state |
+|---|---|---|
+| 2026-11-01 | 0.1.0 (1) | first production release, sent for review, full rollout |
+
+Decisions at submission: Google Play Games on PC was opted out, because Play added it automatically to the game and the manifest requires leanback, so it cannot run on a PC. It can be reversed in the form factors page. Tags are Party games and Trivia; Play has no Multiplayer tag.
