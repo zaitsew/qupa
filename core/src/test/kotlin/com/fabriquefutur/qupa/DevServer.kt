@@ -52,7 +52,7 @@ fun main() {
                             launch {
                                 delay(random.nextLong(1_500, 9_000))
                                 val choice = if (random.nextInt(100) < 60) q.correctIndex else random.nextInt(q.answers.size)
-                                val r = session.answer(bot.id, q.index + 1, choice)
+                                val r = session.answer(bot.id, bot.token, q.index + 1, choice)
                                 if (r != AnswerResult.ACCEPTED) println("bot answer: $r")
                             }
                         }

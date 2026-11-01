@@ -188,7 +188,7 @@
 
   // ---- connection ----
   var ws = null, session = load(), view = null, viewAt = 0, wantName = '', joined = false;
-  var retries = 0, retryTimer = null, pingTimer = null, lastPong = 0, chosenLocal = -1, chosenQ = 0, lateQ = 0, closedByUs = false;
+  var retries = 0, retryTimer = null, pingTimer = null, lastPong = 0, chosenLocal = -1, chosenQ = 0, lateQ = 0, closedByUs = false, resync = false;
 
   function setStatus(msg) {
     var el = $('status');
@@ -242,7 +242,7 @@
   function handle(m) {
     switch (m.t) {
       case 'welcome':
-        retries = 0; joined = true; setStatus('');
+        retries = 0; joined = true; setStatus(''); resync = true;
         session = { playerId: m.playerId, name: m.name };
         save(session); saveName(m.name);
         break;
@@ -259,6 +259,8 @@
       case 'view':
         view = m; viewAt = performance.now();
         if (view.q !== chosenQ) { chosenQ = view.q; chosenLocal = -1; lateQ = 0; }
+        // After a reconnect the server decides: an answer lost with the old socket is unlocked.
+        if (resync) { resync = false; if (!view.answered) chosenLocal = -1; }
         render();
         break;
       default: break;
@@ -294,6 +296,7 @@
   function pick(i) {
     if (!view || view.phase !== 'question' || view.answered || chosenLocal >= 0) return;
     if (remaining() <= 0) return;
+    if (!ws || ws.readyState !== 1) return;
     chosenLocal = i;
     if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
     send({ t: 'answer', q: view.q, choice: i });

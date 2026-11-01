@@ -80,7 +80,9 @@ class GameSession(
         }
     }
 
-    fun answer(playerId: String, questionNumber: Int, choice: Int): AnswerResult = locked {
+    /** Only the socket that holds the seat can answer: a tab that was taken over is refused. */
+    fun answer(playerId: String, token: Int, questionNumber: Int, choice: Int): AnswerResult = locked {
+        if (tokens[playerId] != token) return@locked AnswerResult.UNKNOWN_PLAYER
         // Phones count questions from 1; the engine from 0.
         engine.submitAnswer(playerId, questionNumber - 1, choice)
     }

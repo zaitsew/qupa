@@ -26,6 +26,7 @@ import com.fabriquefutur.qupa.server.QuizServer
 import com.fabriquefutur.qupa.sound.Effect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
@@ -186,7 +187,8 @@ class QupaViewModel(app: Application) : AndroidViewModel(app) {
             }
             val srv = QuizServer(game, AssetsWeb(getApplication()))
             try {
-                val port = withContext(Dispatchers.IO) { srv.start() }
+                // Not cancellable: leaving the lobby now must not abandon a server that is coming up.
+                val port = withContext(NonCancellable + Dispatchers.IO) { srv.start() }
                 url = LanAddress.joinUrl(host, port, room)
             } catch (_: Exception) {
                 fail(PlayProblem.SERVER)
@@ -195,7 +197,8 @@ class QupaViewModel(app: Application) : AndroidViewModel(app) {
             server = srv
             // The lobby may have been left while the server was starting.
             if (!scope.isActive) {
-                withContext(Dispatchers.IO) { srv.stop() }
+                withContext(NonCancellable + Dispatchers.IO) { srv.stop() }
+                if (server === srv) server = null
                 return
             }
         }

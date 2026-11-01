@@ -43,8 +43,18 @@ class GameSessionTest {
         val seated = (s.join("Ana", null) as JoinOutcome.Ok).seated
         s.start()
         val correct = s.snapshots.value.question!!.correctIndex
-        assertEquals(AnswerResult.STALE, s.answer(seated.id, 0, correct))
-        assertEquals(AnswerResult.ACCEPTED, s.answer(seated.id, 1, correct))
+        assertEquals(AnswerResult.STALE, s.answer(seated.id, seated.token, 0, correct))
+        assertEquals(AnswerResult.ACCEPTED, s.answer(seated.id, seated.token, 1, correct))
+    }
+
+    @Test fun aSocketThatLostTheSeatCannotAnswer() = runTest {
+        val s = session()
+        val first = (s.join("Ana", null) as JoinOutcome.Ok).seated
+        val second = (s.join("Ana", first.id) as JoinOutcome.Ok).seated
+        s.start()
+        val correct = s.snapshots.value.question!!.correctIndex
+        assertEquals(AnswerResult.UNKNOWN_PLAYER, s.answer(first.id, first.token, 1, correct))
+        assertEquals(AnswerResult.ACCEPTED, s.answer(second.id, second.token, 1, correct))
     }
 
     @Test fun aNewerSocketKeepsTheSeatWhenTheOldOneCloses() = runTest {

@@ -42,6 +42,8 @@ import io.ktor.websocket.readText
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.net.BindException
 
 /** Reads a file of the phone page from the app's assets (or, in tests, from disk). */
@@ -142,15 +144,19 @@ class QuizServer(
         var playerId: String? = null
         var token = 0
         var lastSentVersion = -1
-        val pusher = ws.launch {
-            session.snapshots.collect { snap ->
-                val id = playerId ?: return@collect
-                if (snap.version == lastSentVersion) return@collect
-                PhoneViews.build(snap, id, session.clock.nowMs())?.let {
-                    lastSentVersion = snap.version
-                    ws.send(it)
-                }
+        // One lock for the seat and the pushes, so a view never overtakes Welcome or a newer view.
+        val pushLock = Mutex()
+        suspend fun pushLatest() {
+            val id = playerId ?: return
+            val snap = session.snapshots.value
+            if (snap.version == lastSentVersion) return
+            PhoneViews.build(snap, id, session.clock.nowMs())?.let {
+                lastSentVersion = snap.version
+                ws.send(it)
             }
+        }
+        val pusher = ws.launch {
+            session.snapshots.collect { pushLock.withLock { pushLatest() } }
         }
         try {
             for (frame in ws.incoming) {
@@ -167,14 +173,11 @@ class QuizServer(
                         when (val outcome = session.join(message.name, message.playerId)) {
                             is JoinOutcome.No -> ws.send(Reject(outcome.reason.wire()))
                             is JoinOutcome.Ok -> {
-                                playerId = outcome.seated.id
-                                token = outcome.seated.token
-                                ws.send(Welcome(outcome.seated.id, outcome.seated.name, PlayerColors.hex(outcome.seated.colorIndex)))
-                                // Push the current view right away, whatever the version.
-                                lastSentVersion = -1
-                                PhoneViews.build(session.snapshots.value, outcome.seated.id, session.clock.nowMs())?.let {
-                                    lastSentVersion = session.snapshots.value.version
-                                    ws.send(it)
+                                pushLock.withLock {
+                                    playerId = outcome.seated.id
+                                    token = outcome.seated.token
+                                    ws.send(Welcome(outcome.seated.id, outcome.seated.name, PlayerColors.hex(outcome.seated.colorIndex)))
+                                    pushLatest()
                                 }
                             }
                         }
@@ -184,7 +187,7 @@ class QuizServer(
                         if (id == null) {
                             ws.send(Ack(message.q, false, "closed"))
                         } else {
-                            val result = session.answer(id, message.q, message.choice)
+                            val result = session.answer(id, token, message.q, message.choice)
                             ws.send(Ack(message.q, result == AnswerResult.ACCEPTED, result.wire()))
                         }
                     }
