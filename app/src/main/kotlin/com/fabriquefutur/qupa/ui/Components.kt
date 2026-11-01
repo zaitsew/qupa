@@ -174,16 +174,13 @@ fun PlayerChip(
             style = Type.BodyBold.copy(color = if (dimmed) QupaColors.Muted else QupaColors.Text),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(start = 10.dp).weightIfRow(),
+            modifier = Modifier.padding(start = 10.dp).weight(1f, fill = false),
         )
         if (trailing != null) {
             Text(trailing, style = Type.BodyBold.copy(color = QupaColors.Ok), modifier = Modifier.padding(start = 10.dp))
         }
     }
 }
-
-/** Keeps a chip's name from pushing its trailing text off the chip. */
-private fun Modifier.weightIfRow(): Modifier = this
 
 /** A thin progress bar. [fraction] runs 0..1. */
 @Composable

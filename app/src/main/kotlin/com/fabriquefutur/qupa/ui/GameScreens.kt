@@ -1,6 +1,7 @@
 package com.fabriquefutur.qupa.ui
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -276,7 +277,9 @@ private fun ScoreRow(p: ParticipantInfo) {
 
 @Composable
 private fun PodiumBlock(p: ParticipantInfo, height: Int, modifier: Modifier = Modifier) {
-    val progress by animateFloatAsState(1f, label = "podium")
+    var target by remember { mutableStateOf(0f) }
+    LaunchedEffect(Unit) { target = 1f }
+    val progress by animateFloatAsState(target, tween(600), label = "podium")
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Text(p.name, style = Type.BodyBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
         Text(p.score.toString(), style = Type.Label)
