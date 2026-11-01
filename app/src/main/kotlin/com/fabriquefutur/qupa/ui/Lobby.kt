@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -166,7 +167,7 @@ private fun TeamRow(id: String, name: String, colorIndex: Int, onRename: (String
         onClick = { editing = true },
         modifier = Modifier.fillMaxWidth().height(56.dp).let { if (requester != null) it.focusRequester(requester) else it },
     ) {
-        Row(Modifier.padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.fillMaxHeight().padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(24.dp).clip(CircleShape).background(QupaColors.player(colorIndex)))
             if (editing) {
                 BasicTextField(

@@ -41,7 +41,7 @@
     <string name="lobby_loading">Cargando preguntas…</string>
     <string name="lobby_available">%d preguntas disponibles</string>
     <string name="no_questions">Ninguna pregunta cumple estos ajustes. Elige más categorías o cualquier dificultad.</string>
-    <string name="team_title">Los equipos juegan por turnos</string>
+    <string name="team_title">Equipos por turnos</string>
     <string name="team_count">Equipos</string>
     <string name="team_default">Equipo %d</string>
     <string name="team_hint">Pulsa OK en un nombre para cambiarlo. El equipo con el turno elige con las flechas y OK.</string>

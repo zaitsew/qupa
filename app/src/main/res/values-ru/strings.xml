@@ -41,7 +41,7 @@
     <string name="lobby_loading">Загружаем вопросы…</string>
     <string name="lobby_available">Подходит вопросов: %d</string>
     <string name="no_questions">Нет вопросов по этим настройкам. Выберите больше категорий или любую сложность.</string>
-    <string name="team_title">Команды ходят по очереди</string>
+    <string name="team_title">Команды по очереди</string>
     <string name="team_count">Команды</string>
     <string name="team_default">Команда %d</string>
     <string name="team_hint">Нажмите OK на названии, чтобы изменить его. Команда, чей ход, выбирает ответ стрелками и OK.</string>
