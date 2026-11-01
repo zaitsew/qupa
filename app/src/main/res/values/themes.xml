@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="qupa_background">#120F2B</color>
+    <color name="ic_launcher_background">#1B1640</color>
+
+    <style name="Theme.Qupa" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/qupa_background</item>
+        <item name="android:colorBackground">@color/qupa_background</item>
+        <item name="android:statusBarColor">@color/qupa_background</item>
+        <item name="android:navigationBarColor">@color/qupa_background</item>
+    </style>
+</resources>

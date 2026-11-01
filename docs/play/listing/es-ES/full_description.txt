@@ -1,0 +1,34 @@
+Qupa convierte tu Google TV en un concurso de preguntas para toda la familia y los amigos. Cada uno juega con su propio móvil. Nadie instala una app y nadie crea una cuenta.
+
+CÓMO FUNCIONA
+1. Abre Qupa en la tele y elige "Jugar con móviles".
+2. Escanea el código QR con la cámara del móvil, o escribe la dirección que aparece.
+3. Escribe un apodo y ya estás dentro. Hasta 8 jugadores.
+4. Las preguntas, la cuenta atrás y la clasificación salen en la pantalla grande. Cada uno responde en su móvil.
+
+Cuanto más rápido respondes, más puntos: una respuesta correcta vale entre 500 y 1.000 puntos. Tras cada pregunta la tele muestra la respuesta correcta y la clasificación, y al final un podio. "Jugar otra vez" mantiene a los mismos jugadores.
+
+¿SIN MÓVILES? JUEGA CON EL MANDO
+De dos a cuatro equipos se turnan con un solo mando. El equipo que tiene el turno elige una respuesta con las flechas y OK.
+
+TÚ ELIGES LA PARTIDA
+- 10, 15 o 20 preguntas
+- 10, 15, 20 o 30 segundos para responder
+- Dificultad fácil, media, difícil o cualquiera
+- Elige tus categorías: ciencia, cine, música, historia, geografía, deportes, animales y más, 24 en total
+
+PENSADO PARA EL SOFÁ
+- Tema oscuro y letra grande que se lee desde el otro lado del salón
+- Control completo con las flechas del mando
+- Color y forma en cada respuesta, para no depender solo del color
+- Efectos de sonido que puedes desactivar
+- Pantallas en español, inglés y ruso (las preguntas están en inglés por ahora; los paquetes de preguntas en español y ruso están previstos)
+
+PRIVADO POR DISEÑO
+Sin anuncios, sin cuentas, sin rastreo. El juego funciona en tu red doméstica: la tele sirve la página del juego a los móviles, así que nada pasa por internet. El servidor solo funciona mientras hay una partida abierta.
+
+Incluye más de 5.000 preguntas. Qupa da prioridad a las que aún no has visto.
+
+Qupa es gratis y de código abierto: github.com/zaitsew/qupa
+
+Preguntas de Open Trivia Database (opentdb.com), CC BY-SA 4.0.

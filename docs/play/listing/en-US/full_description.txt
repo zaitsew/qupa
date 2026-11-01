@@ -1,0 +1,34 @@
+Qupa turns your Google TV into a party quiz show. Everyone plays on their own phone. Nobody installs an app and nobody makes an account.
+
+HOW IT WORKS
+1. Open Qupa on the TV and choose "Play with phones".
+2. Scan the QR code with a phone camera, or type the address shown.
+3. Type a nickname and you are in. Up to 8 players.
+4. Questions, the countdown and the scoreboard are on the big screen. Everyone answers on their own phone.
+
+Faster answers score more: a correct answer is worth 500 to 1,000 points. After every question the TV shows the right answer and the scoreboard, and after the last one a podium. Play again keeps the same players.
+
+NO PHONES? PLAY WITH THE REMOTE
+Two to four teams take turns on one remote. The team in turn picks an answer with the arrow keys and OK.
+
+YOU CHOOSE THE GAME
+- 10, 15 or 20 questions
+- 10, 15, 20 or 30 seconds to answer
+- Easy, medium, hard or any difficulty
+- Pick the categories you like: science, film, music, history, geography, sports, animals and more, 24 in all
+
+MADE FOR THE SOFA
+- Dark theme and large type you can read from across the room
+- Full control with the remote's D-pad
+- Colour and shape on every answer, so nobody relies on colour alone
+- Sound effects you can switch off
+- Screens in English, Spanish and Russian (the questions are in English for now; Spanish and Russian question packs are planned)
+
+PRIVATE BY DESIGN
+No ads, no accounts, no tracking. The game runs on your home network: the TV serves the game page to the phones, so nothing goes through the internet. The server runs only while a game is open.
+
+Over 5,000 questions are built in. Qupa prefers ones you have not seen yet.
+
+Qupa is free and open source: github.com/zaitsew/qupa
+
+Questions from the Open Trivia Database (opentdb.com), CC BY-SA 4.0.

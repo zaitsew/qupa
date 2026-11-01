@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#120F2B">
+<title>Qupa</title>
+<style>
+  :root {
+    --bg: #120F2B; --card: #1F1A3F; --card-hi: #2D2660; --text: #F4F2FF; --muted: #B7B0DB;
+    --accent: #A78BFA; --ok: #06D6A0; --bad: #EF476F;
+    --a: #EF476F; --b: #4EA8DE; --c: #FFD166; --d: #06D6A0; --ink: #10122B;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
+    font: 18px/1.35 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; touch-action: manipulation; }
+  body { display: flex; flex-direction: column; min-height: 100%; padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom); }
+  [hidden] { display: none !important; }
+  h1 { font-size: 40px; margin: 0 0 4px; letter-spacing: -0.5px; }
+  p { margin: 0 0 12px; }
+  .muted { color: var(--muted); }
+  #bar { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--card); font-weight: 600; }
+  #bar .dot { width: 18px; height: 18px; border-radius: 50%; flex: none; }
+  #bar .name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #bar .score { font-variant-numeric: tabular-nums; color: var(--muted); }
+  .screen { flex: 1; display: flex; flex-direction: column; padding: 20px 16px 24px; }
+  .center { align-items: center; justify-content: center; text-align: center; }
+  input[type=text] { width: 100%; font: inherit; font-size: 22px; padding: 16px; border-radius: 14px; border: 2px solid var(--card-hi);
+    background: var(--card); color: var(--text); margin: 16px 0 12px; }
+  input[type=text]:focus { outline: none; border-color: var(--accent); }
+  button.primary { font: inherit; font-size: 22px; font-weight: 700; width: 100%; padding: 16px; border: 0; border-radius: 14px;
+    background: var(--accent); color: var(--ink); }
+  button.primary:disabled { opacity: .5; }
+  .msg { min-height: 1.4em; color: var(--bad); margin: 0 0 12px; }
+  .status { position: fixed; left: 0; right: 0; top: 0; padding: 8px 16px; text-align: center; background: #5B2A86; font-size: 15px; z-index: 5; }
+  #timer { height: 10px; background: var(--card); border-radius: 5px; overflow: hidden; margin: 4px 0 16px; }
+  #timer > div { height: 100%; width: 100%; background: var(--accent); transform-origin: left center; }
+  #qinfo { display: flex; justify-content: space-between; color: var(--muted); font-size: 16px; }
+  #answers { flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: 12px; min-height: 280px; }
+  #answers.tf { grid-template-columns: 1fr; }
+  #answers button { border: 0; border-radius: 18px; color: var(--ink); font: inherit; font-size: 44px; font-weight: 800;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px; }
+  #answers button small { font-size: 18px; font-weight: 700; opacity: .85; }
+  #answers button.tfb { flex-direction: row; gap: 14px; font-size: 34px; }
+  #answers button:active:not(:disabled) { transform: scale(.97); }
+  #answers button:disabled { opacity: .35; }
+  #answers button.picked { opacity: 1; outline: 6px solid #fff; outline-offset: -6px; }
+  .a { background: var(--a); } .b { background: var(--b); } .c { background: var(--c); } .d { background: var(--d); }
+  #locked { text-align: center; color: var(--muted); margin-top: 14px; min-height: 1.4em; }
+  .badge { width: 120px; height: 120px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 64px; margin: 8px auto 12px; color: var(--ink); }
+  .badge.ok { background: var(--ok); } .badge.bad { background: var(--bad); } .badge.none { background: var(--card-hi); color: var(--text); }
+  .gain { font-size: 44px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; margin-top: 20px; }
+  .cards div { background: var(--card); border-radius: 14px; padding: 14px 8px; }
+  .cards b { display: block; font-size: 32px; font-variant-numeric: tabular-nums; }
+  .cards span { color: var(--muted); font-size: 15px; }
+  .correct-note { margin-top: 14px; color: var(--muted); }
+  .correct-note b { display: inline-block; padding: 2px 12px; border-radius: 10px; color: var(--ink); margin-left: 6px; }
+  .medal { font-size: 96px; line-height: 1; }
+</style>
+</head>
+<body>
+<div class="status" id="status" hidden></div>
+
+<div id="bar" hidden><span class="dot" id="bar-dot"></span><span class="name" id="bar-name"></span><span class="score" id="bar-score"></span></div>
+
+<section class="screen center" id="s-join">
+  <h1>Qupa</h1>
+  <p class="muted" id="join-sub"></p>
+  <input type="text" id="nick" maxlength="16" autocomplete="off" autocapitalize="words" spellcheck="false" aria-label="Nickname">
+  <div class="msg" id="join-msg" role="alert"></div>
+  <button class="primary" id="join-btn"></button>
+</section>
+
+<section class="screen center" id="s-connecting" hidden>
+  <p class="muted" id="connecting-text"></p>
+</section>
+
+<section class="screen center" id="s-fail" hidden>
+  <p id="fail-text"></p>
+  <button class="primary" id="fail-btn"></button>
+</section>
+
+<section class="screen center" id="s-lobby" hidden>
+  <h1 id="lobby-title"></h1>
+  <p class="muted" id="lobby-text"></p>
+  <p class="muted" id="lobby-count"></p>
+</section>
+
+<section class="screen" id="s-question" hidden>
+  <div id="qinfo"><span id="qnum"></span><span id="qtime"></span></div>
+  <div id="timer"><div id="timer-fill"></div></div>
+  <div id="answers"></div>
+  <div id="locked"></div>
+</section>
+
+<section class="screen center" id="s-result" hidden>
+  <div class="badge" id="res-badge"></div>
+  <h1 id="res-title"></h1>
+  <div class="gain" id="res-gain"></div>
+  <div class="correct-note" id="res-correct" hidden></div>
+  <div class="cards">
+    <div><b id="res-score"></b><span id="res-score-l"></span></div>
+    <div><b id="res-rank"></b><span id="res-rank-l"></span></div>
+  </div>
+  <p class="muted" id="res-next" style="margin-top:20px"></p>
+</section>
+
+<section class="screen center" id="s-podium" hidden>
+  <div class="medal" id="pod-medal"></div>
+  <h1 id="pod-title"></h1>
+  <p id="pod-sub" class="muted"></p>
+  <div class="cards">
+    <div><b id="pod-score"></b><span id="pod-score-l"></span></div>
+    <div><b id="pod-rank"></b><span id="pod-rank-l"></span></div>
+  </div>
+  <p class="muted" id="pod-wait" style="margin-top:20px"></p>
+</section>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---- text, in the phone's language (en, es, ru; English otherwise) ----
+  var STRINGS = {
+    en: {
+      joinSub: 'Pick a nickname and join the game on the TV.', nick: 'Your nickname', join: 'Join',
+      needName: 'Please type a nickname.', full: 'This game is full (8 players).',
+      connecting: 'Connecting to the TV…', reconnecting: 'Reconnecting…',
+      fail: "Can't reach the TV. Check that this phone is on the same Wi-Fi and the game is still open.", retry: 'Try again',
+      lobbyTitle: "You're in!", lobbyText: 'Watch the TV. The host starts the game.', players: 'Players in the game:',
+      question: 'Question', locked: 'Answer locked in. Wait for the others…', tooLate: 'Too late for this one.',
+      timeUp: 'Time is up!', yes: 'True', no: 'False',
+      correct: 'Correct!', wrong: 'Not this time', none: 'No answer', correctWas: 'The correct answer was',
+      score: 'Score', rank: 'Rank', next: 'Next question coming up…',
+      gameOver: 'Game over', winner: 'You won!', second: 'Second place!', third: 'Third place!', finish: 'You finished',
+      again: 'Waiting for the host to play again…', points: 'points'
+    },
+    es: {
+      joinSub: 'Elige un apodo y entra en la partida de la tele.', nick: 'Tu apodo', join: 'Entrar',
+      needName: 'Escribe un apodo.', full: 'La partida está llena (8 jugadores).',
+      connecting: 'Conectando con la tele…', reconnecting: 'Reconectando…',
+      fail: 'No llego a la tele. Comprueba que este móvil está en el mismo Wi-Fi y que la partida sigue abierta.', retry: 'Reintentar',
+      lobbyTitle: '¡Estás dentro!', lobbyText: 'Mira la tele. El anfitrión empieza la partida.', players: 'Jugadores en la partida:',
+      question: 'Pregunta', locked: 'Respuesta enviada. Espera a los demás…', tooLate: 'Demasiado tarde para esta.',
+      timeUp: '¡Se acabó el tiempo!', yes: 'Verdadero', no: 'Falso',
+      correct: '¡Correcto!', wrong: 'Esta vez no', none: 'Sin respuesta', correctWas: 'La respuesta correcta era',
+      score: 'Puntos', rank: 'Puesto', next: 'Viene la siguiente pregunta…',
+      gameOver: 'Fin de la partida', winner: '¡Has ganado!', second: '¡Segundo puesto!', third: '¡Tercer puesto!', finish: 'Has terminado',
+      again: 'Esperando a que el anfitrión repita…', points: 'puntos'
+    },
+    ru: {
+      joinSub: 'Выберите ник и войдите в игру на ТВ.', nick: 'Ваш ник', join: 'Войти',
+      needName: 'Введите ник.', full: 'В игре уже 8 игроков.',
+      connecting: 'Подключаемся к ТВ…', reconnecting: 'Переподключаемся…',
+      fail: 'Не удаётся связаться с ТВ. Проверьте, что телефон в той же сети Wi-Fi и игра ещё открыта.', retry: 'Попробовать снова',
+      lobbyTitle: 'Вы в игре!', lobbyText: 'Смотрите на ТВ. Ведущий начнёт игру.', players: 'Игроков в игре:',
+      question: 'Вопрос', locked: 'Ответ принят. Ждём остальных…', tooLate: 'Для этого вопроса уже поздно.',
+      timeUp: 'Время вышло!', yes: 'Верно', no: 'Неверно',
+      correct: 'Верно!', wrong: 'В этот раз не верно', none: 'Нет ответа', correctWas: 'Правильный ответ',
+      score: 'Очки', rank: 'Место', next: 'Скоро следующий вопрос…',
+      gameOver: 'Игра окончена', winner: 'Вы победили!', second: 'Второе место!', third: 'Третье место!', finish: 'Вы завершили',
+      again: 'Ждём, пока ведущий начнёт заново…', points: 'очков'
+    }
+  };
+  var lang = ((navigator.language || 'en').slice(0, 2).toLowerCase());
+  if (!STRINGS[lang]) lang = 'en';
+  function t(key) { return STRINGS[lang][key] || STRINGS.en[key] || key; }
+  document.documentElement.lang = lang;
+
+  // ---- helpers ----
+  function $(id) { return document.getElementById(id); }
+  function text(id, value) { $(id).textContent = value; }   // player text always goes through textContent
+  var SCREENS = ['join', 'connecting', 'fail', 'lobby', 'question', 'result', 'podium'];
+  function show(name) {
+    SCREENS.forEach(function (s) { $('s-' + s).hidden = (s !== name); });
+    $('bar').hidden = !(name === 'lobby' || name === 'question' || name === 'result' || name === 'podium');
+  }
+  function fmt(n) { try { return Number(n).toLocaleString(lang); } catch (e) { return String(n); } }
+
+  var ROOM = new URLSearchParams(location.search).get('r') || '';
+  var KEY = 'qupa.' + ROOM;
+  function load() { try { return JSON.parse(localStorage.getItem(KEY) || 'null') || {}; } catch (e) { return {}; } }
+  function save(v) { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch (e) { /* private mode */ } }
+  function lastName() { try { return localStorage.getItem('qupa.name') || ''; } catch (e) { return ''; } }
+  function saveName(n) { try { localStorage.setItem('qupa.name', n); } catch (e) { /* private mode */ } }
+
+  // ---- connection ----
+  var ws = null, session = load(), view = null, viewAt = 0, wantName = '', joined = false;
+  var retries = 0, retryTimer = null, pingTimer = null, lastPong = 0, chosenLocal = -1, chosenQ = 0, lateQ = 0, closedByUs = false, resync = false;
+
+  function setStatus(msg) {
+    var el = $('status');
+    el.hidden = !msg;
+    el.textContent = msg || '';
+  }
+
+  function connect() {
+    clearTimeout(retryTimer);
+    if (ws && (ws.readyState === 0 || ws.readyState === 1)) return;
+    if (!joined) show('connecting');
+    var proto = location.protocol === 'https:' ? 'wss://' : 'ws://';
+    try { ws = new WebSocket(proto + location.host + '/ws?r=' + encodeURIComponent(ROOM)); }
+    catch (e) { scheduleRetry(); return; }
+    var mine = ws;
+    mine.onopen = function () {
+      lastPong = Date.now();
+      send({ t: 'join', name: wantName, playerId: session.playerId || null });
+      clearInterval(pingTimer);
+      pingTimer = setInterval(function () {
+        if (mine !== ws) return;
+        if (Date.now() - lastPong > 25000) { try { mine.close(); } catch (e) {} return; }
+        send({ t: 'ping', n: 1 });
+      }, 8000);
+    };
+    mine.onmessage = function (ev) {
+      var m; try { m = JSON.parse(ev.data); } catch (e) { return; }
+      lastPong = Date.now();
+      handle(m);
+    };
+    mine.onclose = function () {
+      if (mine !== ws) return;
+      clearInterval(pingTimer);
+      if (closedByUs) return;
+      scheduleRetry();
+    };
+    mine.onerror = function () { /* onclose follows */ };
+  }
+
+  function scheduleRetry() {
+    retries++;
+    if (joined) setStatus(t('reconnecting'));
+    if (!joined && retries >= 3) { show('fail'); }
+    var delay = Math.min(1000 * retries, 5000);
+    clearTimeout(retryTimer);
+    retryTimer = setTimeout(connect, delay);
+  }
+
+  function send(m) { if (ws && ws.readyState === 1) ws.send(JSON.stringify(m)); }
+
+  function handle(m) {
+    switch (m.t) {
+      case 'welcome':
+        retries = 0; joined = true; setStatus(''); resync = true;
+        session = { playerId: m.playerId, name: m.name };
+        save(session); saveName(m.name);
+        break;
+      case 'reject':
+        retries = 0; joined = false; closedByUs = true;
+        try { ws.close(); } catch (e) {}
+        show('join');
+        text('join-msg', m.reason === 'full' ? t('full') : t('needName'));
+        $('join-btn').disabled = false;
+        break;
+      case 'ack':
+        if (!m.ok && m.reason === 'late') { lateQ = m.q; chosenLocal = -1; render(); }
+        break;
+      case 'view':
+        view = m; viewAt = performance.now();
+        if (view.q !== chosenQ) { chosenQ = view.q; chosenLocal = -1; lateQ = 0; }
+        // After a reconnect the server decides: an answer lost with the old socket is unlocked.
+        if (resync) { resync = false; if (!view.answered) chosenLocal = -1; }
+        render();
+        break;
+      default: break;
+    }
+  }
+
+  // ---- screens ----
+  var SHAPES = ['▲', '◆', '●', '■'], LETTERS = ['A', 'B', 'C', 'D'], CLASSES = ['a', 'b', 'c', 'd'];
+
+  function buildAnswers(count, kind) {
+    var box = $('answers');
+    if (box.dataset.kind === kind + count) return;
+    box.dataset.kind = kind + count;
+    box.textContent = '';
+    box.className = kind === 'tf' ? 'tf' : '';
+    for (var i = 0; i < count; i++) {
+      (function (i) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = CLASSES[i] + (kind === 'tf' ? ' tfb' : '');
+        b.setAttribute('aria-label', kind === 'tf' ? (i === 0 ? t('yes') : t('no')) : LETTERS[i]);
+        var shape = document.createElement('span'); shape.textContent = SHAPES[i];
+        var label = document.createElement('small');
+        label.textContent = kind === 'tf' ? (i === 0 ? t('yes') : t('no')) : LETTERS[i];
+        if (kind === 'tf') { b.appendChild(shape); b.appendChild(label); label.style.fontSize = '30px'; }
+        else { b.appendChild(shape); b.appendChild(label); }
+        b.addEventListener('click', function () { pick(i); });
+        box.appendChild(b);
+      })(i);
+    }
+  }
+
+  function pick(i) {
+    if (!view || view.phase !== 'question' || view.answered || chosenLocal >= 0) return;
+    if (remaining() <= 0) return;
+    if (!ws || ws.readyState !== 1) return;
+    chosenLocal = i;
+    if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+    send({ t: 'answer', q: view.q, choice: i });
+    render();
+  }
+
+  function remaining() { return view ? Math.max(0, view.remainingMs - (performance.now() - viewAt)) : 0; }
+
+  function renderBar() {
+    $('bar-dot').style.background = view.color;
+    text('bar-name', view.name);
+    text('bar-score', fmt(view.score) + ' ' + t('points'));
+  }
+
+  function render() {
+    if (!view) return;
+    if (!joined) return;
+    switch (view.phase) {
+      case 'lobby':
+        show('lobby'); renderBar();
+        text('lobby-title', t('lobbyTitle')); text('lobby-text', t('lobbyText'));
+        text('lobby-count', t('players') + ' ' + view.players);
+        break;
+      case 'question': renderQuestion(); break;
+      case 'reveal': case 'scoreboard': renderResult(); break;
+      case 'podium': renderPodium(); break;
+      default: break;
+    }
+  }
+
+  function renderQuestion() {
+    show('question'); renderBar();
+    buildAnswers(view.choices, view.kind);
+    text('qnum', t('question') + ' ' + view.q + ' / ' + view.total);
+    var locked = view.answered || chosenLocal >= 0;
+    var mine = chosenLocal;
+    var btns = $('answers').children;
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].disabled = locked && i !== mine;
+      btns[i].classList.toggle('picked', locked && i === mine);
+    }
+    var msg = '';
+    if (lateQ === view.q) msg = t('tooLate');
+    else if (locked) msg = t('locked');
+    text('locked', msg);
+    tickTimer();
+  }
+
+  var timerRunning = false;
+  function tickTimer() {
+    if (timerRunning) return;
+    timerRunning = true;
+    requestAnimationFrame(frame);
+  }
+  function frame() {
+    timerRunning = false;
+    if (!view || view.phase !== 'question') return;
+    var left = remaining(), total = view.totalMs || 1;
+    $('timer-fill').style.transform = 'scaleX(' + Math.max(0, Math.min(1, left / total)) + ')';
+    text('qtime', left > 0 ? Math.ceil(left / 1000) + ' s' : t('timeUp'));
+    if (left <= 0) {
+      var btns = $('answers').children;
+      for (var i = 0; i < btns.length; i++) btns[i].disabled = true;
+    }
+    tickTimer();
+  }
+
+  function renderResult() {
+    show('result'); renderBar();
+    var outcome = view.chosen < 0 ? 'none' : (view.chosen === view.correct ? 'ok' : 'bad');
+    var badge = $('res-badge');
+    badge.className = 'badge ' + (outcome === 'ok' ? 'ok' : outcome === 'bad' ? 'bad' : 'none');
+    badge.textContent = outcome === 'ok' ? '✓' : outcome === 'bad' ? '✗' : '⏱';
+    text('res-title', outcome === 'ok' ? t('correct') : outcome === 'bad' ? t('wrong') : t('none'));
+    text('res-gain', outcome === 'ok' ? '+' + fmt(view.gained) : '');
+    var note = $('res-correct');
+    if (outcome !== 'ok' && view.correct >= 0) {
+      note.hidden = false;
+      note.textContent = t('correctWas') + ' ';
+      var chip = document.createElement('b');
+      chip.className = CLASSES[view.correct];
+      chip.textContent = SHAPES[view.correct] + ' ' + (view.kind === 'tf' ? (view.correct === 0 ? t('yes') : t('no')) : LETTERS[view.correct]);
+      chip.style.background = getComputedStyle(document.documentElement).getPropertyValue('--' + CLASSES[view.correct]);
+      note.appendChild(chip);
+    } else { note.hidden = true; }
+    text('res-score', fmt(view.score)); text('res-score-l', t('score'));
+    text('res-rank', '#' + view.rank); text('res-rank-l', t('rank') + ' · ' + view.players);
+    text('res-next', view.phase === 'scoreboard' ? t('next') : '');
+  }
+
+  function renderPodium() {
+    show('podium'); renderBar();
+    var r = view.rank;
+    text('pod-medal', r === 1 ? '🥇' : r === 2 ? '🥈' : r === 3 ? '🥉' : '🏁');
+    text('pod-title', t('gameOver'));
+    text('pod-sub', r === 1 ? t('winner') : r === 2 ? t('second') : r === 3 ? t('third') : t('finish'));
+    text('pod-score', fmt(view.score)); text('pod-score-l', t('score'));
+    text('pod-rank', '#' + r); text('pod-rank-l', t('rank') + ' · ' + view.players);
+    text('pod-wait', t('again'));
+  }
+
+  // ---- start up ----
+  text('join-sub', t('joinSub'));
+  $('nick').placeholder = t('nick');
+  text('join-btn', t('join'));
+  text('connecting-text', t('connecting'));
+  text('fail-text', t('fail'));
+  text('fail-btn', t('retry'));
+  $('nick').value = (session.name || lastName() || '').slice(0, 16);
+
+  function doJoin() {
+    var name = $('nick').value.replace(/\s+/g, ' ').trim().slice(0, 16);
+    if (!name) { text('join-msg', t('needName')); return; }
+    text('join-msg', '');
+    $('join-btn').disabled = true;
+    wantName = name; closedByUs = false; retries = 0;
+    connect();
+  }
+  $('join-btn').addEventListener('click', doJoin);
+  $('nick').addEventListener('keydown', function (e) { if (e.key === 'Enter') doJoin(); });
+  $('fail-btn').addEventListener('click', function () { retries = 0; closedByUs = false; connect(); });
+
+  // A phone that slept comes back: reconnect at once.
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible' && wantName && (!ws || ws.readyState > 1)) { retries = 0; connect(); }
+  });
+
+  // Known seat for this room: rejoin without asking for the name again.
+  if (session.playerId && session.name) { wantName = session.name; connect(); }
+  else show('join');
+})();
+</script>
+</body>
+</html>
