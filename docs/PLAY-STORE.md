@@ -86,9 +86,9 @@ runs a full game from the remote alone.
 | section | answer |
 |---|---|
 | Privacy policy | `https://zaitsew.github.io/qupa/privacy` |
-| App access | All functionality is available without special access |
+| Sign in details | **Yes**, because the form's Yes list names QR codes and actions on another device. No account or payment exists. The entry tells the reviewer that "Play with the remote" runs a full game with no phone. Google's partner-device testing toggle is off |
 | Ads | No, the app contains no ads |
-| Content rating | Category **Game**. Violence: No (trivia questions mention history and war in text only, no depiction). Sexuality, language, controlled substances, gambling, digital purchases: No. "Users can interact": **Yes**, because players' nicknames show on the shared screen to people in the same room; there is no chat, no media sharing and no online discovery. Expected: PEGI 3 / Everyone, with the interaction notice |
+| Content rating | Category **Game**. The questions ask about text references too, and the bank has them, so the answers are Yes as text only. Violence against humans: realistic setting, referred to, no blood. Suggestive references (song and album titles). Gambling themes, not prominent. Minor profanity, rarely. References to illegal drugs, medical drugs, alcohol and tobacco, rarely. Fear, crude humor, digital purchases, location, Nazi symbols, terrorism, crime techniques: No. "Users can interact": **Yes**, because nicknames show on the shared screen. Block, report and moderation: No, the app has none. Limited to invited friends: Yes, joining needs the room code on the TV. Result on 2026-11-01: PEGI 12, USK 12, ESRB Teen, ClassInd 14+, GRAC 15+, ACB Mature, Gmedia 16, DGSC Restricted, IARC generic 12+ |
 | Target audience | 18 and over (keeps the app out of the Families program) |
 | News app | No |
 | Data safety | See below |
