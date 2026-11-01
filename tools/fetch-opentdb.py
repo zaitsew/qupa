@@ -45,7 +45,11 @@ BLOCKED_RE = re.compile(r"\b(" + "|".join(re.escape(w) for w in BLOCKED_WORDS) +
 
 # Four questions whose text the repository's leak gate refuses (a first name it treats as
 # private). They are dropped by id rather than allow-listed.
-EXCLUDED_IDS = {"d448aebcb61e", "59ddbf73ec34", "98f0bb058987", "e24202913db9"}
+LEAK_GATE_IDS = {"d448aebcb61e", "59ddbf73ec34", "98f0bb058987", "e24202913db9"}
+# Eight more that pass the word filter but read badly on a family TV: sexual jokes, drug and
+# self-harm references, and a "most killed" ranking of dictators. Found by reading the regex hits.
+FAMILY_ROOM_IDS = {"de8a750ec8d0", "db5c06556ed1", "c55e946d5c85", "aa0b3e8d6b19", "88df160deb51", "390623b3753d", "317f0ba8c9ba", "c7221c3e1724"}
+EXCLUDED_IDS = LEAK_GATE_IDS | FAMILY_ROOM_IDS
 
 # A question that points at a picture, a list on screen or "the following" cannot be read aloud.
 UNANSWERABLE_RE = re.compile(

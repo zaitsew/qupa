@@ -129,7 +129,7 @@
       needName: 'Please type a nickname.', full: 'This game is full (8 players).',
       connecting: 'Connecting to the TV…', reconnecting: 'Reconnecting…',
       fail: "Can't reach the TV. Check that this phone is on the same Wi-Fi and the game is still open.", retry: 'Try again',
-      lobbyTitle: "You're in!", lobbyText: 'Watch the TV. The host starts the game.', players: 'players in the game',
+      lobbyTitle: "You're in!", lobbyText: 'Watch the TV. The host starts the game.', players: 'Players in the game:',
       question: 'Question', locked: 'Answer locked in. Wait for the others…', tooLate: 'Too late for this one.',
       timeUp: 'Time is up!', yes: 'True', no: 'False',
       correct: 'Correct!', wrong: 'Not this time', none: 'No answer', correctWas: 'The correct answer was',
@@ -142,7 +142,7 @@
       needName: 'Escribe un apodo.', full: 'La partida está llena (8 jugadores).',
       connecting: 'Conectando con la tele…', reconnecting: 'Reconectando…',
       fail: 'No llego a la tele. Comprueba que este móvil está en el mismo Wi-Fi y que la partida sigue abierta.', retry: 'Reintentar',
-      lobbyTitle: '¡Estás dentro!', lobbyText: 'Mira la tele. El anfitrión empieza la partida.', players: 'jugadores en la partida',
+      lobbyTitle: '¡Estás dentro!', lobbyText: 'Mira la tele. El anfitrión empieza la partida.', players: 'Jugadores en la partida:',
       question: 'Pregunta', locked: 'Respuesta enviada. Espera a los demás…', tooLate: 'Demasiado tarde para esta.',
       timeUp: '¡Se acabó el tiempo!', yes: 'Verdadero', no: 'Falso',
       correct: '¡Correcto!', wrong: 'Esta vez no', none: 'Sin respuesta', correctWas: 'La respuesta correcta era',
@@ -155,7 +155,7 @@
       needName: 'Введите ник.', full: 'В игре уже 8 игроков.',
       connecting: 'Подключаемся к ТВ…', reconnecting: 'Переподключаемся…',
       fail: 'Не удаётся связаться с ТВ. Проверьте, что телефон в той же сети Wi-Fi и игра ещё открыта.', retry: 'Попробовать снова',
-      lobbyTitle: 'Вы в игре!', lobbyText: 'Смотрите на ТВ. Ведущий начнёт игру.', players: 'игроков в игре',
+      lobbyTitle: 'Вы в игре!', lobbyText: 'Смотрите на ТВ. Ведущий начнёт игру.', players: 'Игроков в игре:',
       question: 'Вопрос', locked: 'Ответ принят. Ждём остальных…', tooLate: 'Для этого вопроса уже поздно.',
       timeUp: 'Время вышло!', yes: 'Верно', no: 'Неверно',
       correct: 'Верно!', wrong: 'В этот раз не верно', none: 'Нет ответа', correctWas: 'Правильный ответ',
@@ -315,7 +315,7 @@
       case 'lobby':
         show('lobby'); renderBar();
         text('lobby-title', t('lobbyTitle')); text('lobby-text', t('lobbyText'));
-        text('lobby-count', view.players + ' ' + t('players'));
+        text('lobby-count', t('players') + ' ' + view.players);
         break;
       case 'question': renderQuestion(); break;
       case 'reveal': case 'scoreboard': renderResult(); break;

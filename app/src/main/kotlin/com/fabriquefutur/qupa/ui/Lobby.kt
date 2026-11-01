@@ -133,7 +133,8 @@ fun PhoneLobby(vm: QupaViewModel, play: PlayState, snap: GameSnapshot) {
             }
             GameSettingChips(snap.settings, vm::updateGame, vm::openCategories)
             NoticeLine(play, snap, available)
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            // verticalScroll clips, and a focused button grows: leave room for its ring.
+            Row(Modifier.padding(horizontal = 6.dp, vertical = 8.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 PrimaryButton(stringResource(R.string.lobby_start), vm::startGame, Modifier.focusRequester(start))
                 SecondaryButton(stringResource(R.string.back), { vm.back() })
             }
@@ -217,7 +218,8 @@ fun TeamLobby(vm: QupaViewModel, play: PlayState, snap: GameSnapshot) {
             )
             GameSettingChips(snap.settings, vm::updateGame, vm::openCategories)
             NoticeLine(play, snap, available)
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            // verticalScroll clips, and a focused button grows: leave room for its ring.
+            Row(Modifier.padding(horizontal = 6.dp, vertical = 8.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 PrimaryButton(stringResource(R.string.lobby_start), vm::startGame, Modifier.focusRequester(start))
                 SecondaryButton(stringResource(R.string.back), { vm.back() })
             }

@@ -6,7 +6,7 @@ One screen per phase. Features that ship are in the [README](../README.md).
 
 - Phone-as-buzzer trivia over the home network: scan, type a nickname, play.
 - Remote-only team mode: 2 to 4 teams take turns on one remote.
-- About 5,000 open-licensed questions (5,280 at release), 24 categories.
+- About 5,000 open-licensed questions (5,272 at release), 24 categories.
 - English, Spanish and Russian screens.
 
 ## v0.2
