@@ -32,6 +32,7 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk       # then open Qupa 
 - **Remote mode.** Two to four named teams take turns, one question each. The
   team in turn picks an answer with the D-pad and OK. A correct answer scores
   a flat 1,000.
+- **Look and sound.** One dark party palette, made for a living-room TV. Synthesized sound effects are on by default; Settings has a switch, next to the default game setup.
 - **Questions.** 5,272 questions in 24 categories from the Open Trivia Database,
   filtered by `tools/fetch-opentdb.py` and shipped in `app/src/main/assets/questions/en.json`.
   The app prefers questions you have not seen; it keeps only their ids, on the TV.
