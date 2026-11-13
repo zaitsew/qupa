@@ -6,6 +6,10 @@ Nobody installs an app and nobody makes an account. The TV serves the game on
 your home network, so nothing goes through the internet. No phones to hand? Two
 to four teams can play on the remote alone.
 
+Version 0.1.0 (1) went to Google Play for production review on 2026-11-01
+([docs/PLAY-STORE.md](docs/PLAY-STORE.md), section 7). The docs record no outcome yet.
+Until it is live, build and install it with the steps below.
+
 ## Quick start
 
 ```sh
@@ -32,7 +36,9 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk       # then open Qupa 
 - **Remote mode.** Two to four named teams take turns, one question each. The
   team in turn picks an answer with the D-pad and OK. A correct answer scores
   a flat 1,000.
-- **Look and sound.** One dark party palette, made for a living-room TV. Synthesized sound effects are on by default; Settings has a switch, next to the default game setup.
+- **Look and sound.** One dark party palette, made for a living-room TV.
+  Synthesized sound effects are on by default. Settings has a switch for them,
+  next to the default game setup.
 - **Questions.** 5,272 questions in 24 categories from the Open Trivia Database,
   filtered by `tools/fetch-opentdb.py` and shipped in `app/src/main/assets/questions/en.json`.
   The app prefers questions you have not seen; it keeps only their ids, on the TV.
@@ -82,3 +88,5 @@ The Play Console answers are in [docs/PLAY-STORE.md](docs/PLAY-STORE.md).
 
 MIT, see [LICENSE](LICENSE). Copyright Fabrique Futur. The questions are
 CC BY-SA 4.0 (Open Trivia Database).
+
+<!-- teyla:reviewed 2026-11-13 -->
