@@ -1,0 +1,26 @@
+{
+  "name": "Qupa",
+  "tagline": "The party quiz where phones are the buzzers.",
+  "summary": "Scan a QR code on your Google TV, play on your phone. No app, no account.",
+  "accent": "#A78BFA",
+  "accent_dark": "#A78BFA",
+  "status": "building",
+  "kind": "app",
+  "platforms": ["Android TV"],
+  "pills": ["Open source", "No account"],
+  "highlights": [
+    {"label": "JOIN", "title": "Scan, type a name, play", "text": "Up to 8 phones join by QR code in the browser. No install."},
+    {"label": "LOCAL", "title": "The TV is the server", "text": "The game runs on your home network, behind a room code."},
+    {"label": "REMOTE", "title": "No phones? Play in teams", "text": "Two to four teams take turns with the D-pad and OK."},
+    {"label": "QUESTIONS", "title": "5,272 questions, 24 topics", "text": "From the Open Trivia Database, in English for now."},
+    {"label": "SPEED", "title": "Faster answers score more", "text": "Up to 1,000 points, never less than 500 for a right answer."},
+    {"label": "PRIVATE", "title": "No ads, no telemetry", "text": "No accounts and no outgoing network calls. UI in EN, ES, RU."}
+  ],
+  "steps": [
+    {"title": "Open Qupa", "text": "Pick Play with phones on the TV."},
+    {"title": "Scan the QR", "text": "Phones join over your home Wi-Fi."},
+    {"title": "Pick the rules", "text": "Questions, answer time, topics."},
+    {"title": "Buzz in", "text": "Answer on your phone; faster scores more."},
+    {"title": "Podium", "text": "Winner on screen, then play again."}
+  ]
+}
