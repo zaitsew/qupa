@@ -94,4 +94,6 @@ git config core.hooksPath .githooks     # run ./check.sh before every push
 
 MIT, see [LICENSE](LICENSE). Copyright Fabrique Futur. Questions come from the Open Trivia Database (opentdb.com) under CC BY-SA 4.0.
 
+<sub>Qupa is a door game for your living room: the TV is the BBS and the 8 player slots are its 8 nodes. No ANSI art, sorry.</sub>
+
 <sub>Built by <a href="https://github.com/zaitsew">zaitsew</a> with a fleet of AI agents.</sub>
