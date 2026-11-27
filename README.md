@@ -94,6 +94,19 @@ git config core.hooksPath .githooks     # run ./check.sh before every push
 
 MIT, see [LICENSE](LICENSE). Copyright Fabrique Futur. Questions come from the Open Trivia Database (opentdb.com) under CC BY-SA 4.0.
 
-<sub>Qupa is a door game for your living room: the TV is the BBS and the 8 player slots are its 8 nodes. No ANSI art, sorry.</sub>
+<details>
+<summary>?</summary>
+
+**Question 5,273 of 5,272.** Which one is born with fur and open eyes, able to move within hours?
+
+<kbd>A&nbsp;Rabbit</kbd> <kbd>B&nbsp;Hare</kbd> <kbd>C&nbsp;Kitten</kbd> <kbd>D&nbsp;Mouse</kbd>
+
+<details>
+<summary>Answer</summary>
+
+**B.** Leverets are born ready to go. Rabbit kits are born bald and blind. Open Trivia DB never asks this one, so the game does not either.
+
+</details>
+</details>
 
 <sub>Built by <a href="https://github.com/zaitsew">zaitsew</a> with a fleet of AI agents.</sub>
